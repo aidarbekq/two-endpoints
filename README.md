@@ -7,16 +7,18 @@
 #Endpoints:
 
 
-**POST /parse-link**
+**POST /parse-link**  
 `http://localhost:8081/parse-link`  
 `
+_payload_ :  
 {
     "paymentLink": "link"
 }
 `
 
-**POST /create-link**
+**POST /create-link**  
 `http://localhost:8081/parse-link`  
+_payload_ :  
 `
 {
     "standardVersion": "",
