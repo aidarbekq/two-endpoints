@@ -19,7 +19,7 @@ _json payload_:
 `
 
 **POST /create-link**  
-`http://localhost:8081/parse-link`  
+`http://localhost:8081/create-link`  
   
 _json payload_ :  
 `
