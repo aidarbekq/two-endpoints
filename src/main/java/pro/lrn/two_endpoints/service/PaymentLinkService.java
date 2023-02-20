@@ -11,68 +11,70 @@ import java.util.Map;
 @Service
 public class PaymentLinkService {
     public PaymentLinkDTO parsePaymentLink(PaymentLinkRequestDTO request) {
-        String paymentLink = request.getPaymentLink();
-        System.out.println(paymentLink);
-        if (paymentLink == null) {
-            throw new NullPointerException("Payment link is null");
-        }
-        if (!paymentLink.startsWith("https://")) {
-            throw new IllegalArgumentException("Invalid payment link");
-        }
-
         PaymentLinkDTO dto = new PaymentLinkDTO();
-
-        String[] parts = paymentLink.split("#");
-        if (parts.length != 2) {
-            throw new IllegalArgumentException("Invalid payment link");
-        }
-
-        String data = parts[1];
-        Map<String, List<String>> values = new HashMap<>();
-
-        while (data.length() > 0) {
-            String id = data.substring(0, 2);
-            int length = Integer.parseInt(data.substring(2, 4));
-            String value = data.substring(4, 4 + length);
-
-            if (values.containsKey(id)) {
-                values.get(id).add(value);
-            } else {
-                List<String> list = new ArrayList<>();
-                list.add(value);
-                values.put(id, list);
+        try {
+            String paymentLink = request.getPaymentLink();
+            if (paymentLink == null) {
+                throw new NullPointerException("Payment link is null");
+            }
+            if (!paymentLink.startsWith("https://")) {
+                throw new IllegalArgumentException("Invalid payment link");
             }
 
-            data = data.substring(4 + length);
-        }
 
-        dto.setStandardVersion(values.get("00").get(0));
-        dto.setTypeOfPaymentLink(values.get("01").get(0));
-        dto.setMcc(values.get("52").get(0));
-        dto.setCurrencyCode(values.get("53").get(0));
-        List<String> paymentAmountList = values.get("54");
-        if (paymentAmountList != null && !paymentAmountList.isEmpty()) {
-            dto.setPaymentAmount(paymentAmountList.get(0));
-        } else {
-            dto.setPaymentAmount(null);
-        }
+            String[] parts = paymentLink.split("#");
+            if (parts.length != 2) {
+                throw new IllegalArgumentException("Invalid payment link");
+            }
 
-        dto.setProviderName(values.get("59").get(0));
-        dto.setDataChecksum(values.get("63").get(0));
+            String data = parts[1];
+            Map<String, List<String>> values = new HashMap<>();
 
-        List<String> info = new ArrayList<>();
-        for (int i = 2; i <= 51; i++) {
-            if (values.containsKey(String.format("%02d", i))) {
-                List<String> valuesList = values.get(String.format("%02d", i));
-                if (valuesList != null) {
-                    for (String value : valuesList) {
-                        info.add(String.format("%02d", i) + value);
+            while (data.length() > 0) {
+                String id = data.substring(0, 2);
+                int length = Integer.parseInt(data.substring(2, 4));
+                String value = data.substring(4, 4 + length);
+
+                if (values.containsKey(id)) {
+                    values.get(id).add(value);
+                } else {
+                    List<String> list = new ArrayList<>();
+                    list.add(value);
+                    values.put(id, list);
+                }
+
+                data = data.substring(4 + length);
+            }
+
+            dto.setStandardVersion(values.get("00").get(0));
+            dto.setTypeOfPaymentLink(values.get("01").get(0));
+            dto.setMcc(values.get("52").get(0));
+            dto.setCurrencyCode(values.get("53").get(0));
+            List<String> paymentAmountList = values.get("54");
+            if (paymentAmountList != null && !paymentAmountList.isEmpty()) {
+                dto.setPaymentAmount(paymentAmountList.get(0));
+            } else {
+                dto.setPaymentAmount(null);
+            }
+
+            dto.setProviderName(values.get("59").get(0));
+            dto.setDataChecksum(values.get("63").get(0));
+
+            List<String> info = new ArrayList<>();
+            for (int i = 2; i <= 51; i++) {
+                if (values.containsKey(String.format("%02d", i))) {
+                    List<String> valuesList = values.get(String.format("%02d", i));
+                    if (valuesList != null) {
+                        for (String value : valuesList) {
+                            info.add(String.format("%02d", i) + value);
+                        }
                     }
                 }
             }
+            dto.setInformationAboutServiceProvider(String.join("-", info));
+        } catch (Exception e) {
+            dto.setError("Error while parsing: " + e.getMessage());
         }
-        dto.setInformationAboutServiceProvider(String.join("-", info));
-
         return dto;
     }
 
