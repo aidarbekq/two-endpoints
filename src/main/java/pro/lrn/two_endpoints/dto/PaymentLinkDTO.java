@@ -74,4 +74,7 @@ public class PaymentLinkDTO {
     public void setStandardVersion(String standardVersion) {
         this.standardVersion = standardVersion;
     }
+
+    public void setError(String s) {
+    }
 }
