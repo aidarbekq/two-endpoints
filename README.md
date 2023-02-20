@@ -1,14 +1,14 @@
-# two-endpoints
+### two-endpoints
 
 
-This controller has two endpoints for managing payment links: parse-link and create-link.
+##This project has two endpoints for managing payment links: _parse-link_ and _create-link_.
 
 
-Endpoints:
+#Endpoints:
 
 
 **POST /parse-link**
-`http://localhost:8081/parse-link`
+`http://localhost:8081/parse-link`  
 `
 {
     "paymentLink": "link"
@@ -16,7 +16,7 @@ Endpoints:
 `
 
 **POST /create-link**
-`http://localhost:8081/parse-link`
+`http://localhost:8081/parse-link`  
 `
 {
     "standardVersion": "",
