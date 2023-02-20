@@ -21,14 +21,14 @@ _payload_ :
 _payload_ :  
 `
 {
-   > "standardVersion": "",
-   > "typeOfPaymentLink": "",
-   > "informationAboutServiceProvider": "",
-   > "mcc": "",
-   > "currencyCode": "",
-   > "paymentAmount": "",
-   > "providerName": "",
-   > "dataChecksum": ""
+   "standardVersion": "",
+   "typeOfPaymentLink": "",
+   "informationAboutServiceProvider": "",
+   "mcc": "",
+   "currencyCode": "",
+   "paymentAmount": "",
+   "providerName": "",
+   "dataChecksum": ""
 }
 `
 
