@@ -13,7 +13,10 @@ public class PaymentLinkService {
     public PaymentLinkDTO parsePaymentLink(PaymentLinkRequestDTO request) {
         String paymentLink = request.getPaymentLink();
         System.out.println(paymentLink);
-        if (!paymentLink.startsWith("https://balance.kg/")) {
+        if (paymentLink == null) {
+            throw new NullPointerException("Payment link is null");
+        }
+        if (!paymentLink.startsWith("https://")) {
             throw new IllegalArgumentException("Invalid payment link");
         }
 
