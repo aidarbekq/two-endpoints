@@ -1,10 +1,10 @@
 ### two-endpoints
 
 
-##This project has two endpoints for managing payment links: _parse-link_ and _create-link_.
+This project has two endpoints for managing payment links: _parse-link_ and _create-link_.
 
 
-#Endpoints:
+Endpoints:
 
 
 **POST /parse-link**  
