@@ -32,5 +32,17 @@ _json payload_ :
    "providerName": "",
    "dataChecksum": ""
 }
+`  
+example:   
 `
-
+{
+    "standardVersion": "01",
+    "typeOfPaymentLink": "11",
+    "informationAboutServiceProvider": "320010balance.kg100512345120211130211-330003521",
+    "mcc": "6012",
+    "currencyCode": "417",
+    "paymentAmount": "56100",
+    "providerName": "balance.kg",
+    "dataChecksum": "d271"
+}
+`
