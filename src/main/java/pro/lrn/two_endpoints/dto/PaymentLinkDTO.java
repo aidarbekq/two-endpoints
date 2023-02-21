@@ -4,7 +4,7 @@ package pro.lrn.two_endpoints.dto;
 public class PaymentLinkDTO {
     private String standardVersion;
     private String typeOfPaymentLink;
-    private String informationAboutServiceProvider;
+    private InformationAboutServiceProviderDTO informationAboutServiceProviderDTO;
     private String mcc;
     private String currencyCode;
     private String paymentAmount;
@@ -19,8 +19,8 @@ public class PaymentLinkDTO {
         return dataChecksum;
     }
 
-    public String getInformationAboutServiceProvider() {
-        return informationAboutServiceProvider;
+    public InformationAboutServiceProviderDTO getInformationAboutServiceProviderDTO() {
+        return informationAboutServiceProviderDTO;
     }
 
     public String getMcc() {
@@ -51,8 +51,8 @@ public class PaymentLinkDTO {
         this.dataChecksum = dataChecksum;
     }
 
-    public void setInformationAboutServiceProvider(String informationAboutServiceProvider) {
-        this.informationAboutServiceProvider = informationAboutServiceProvider;
+    public void setInformationAboutServiceProviderDTO(InformationAboutServiceProviderDTO informationAboutServiceProviderDTO) {
+        this.informationAboutServiceProviderDTO = informationAboutServiceProviderDTO;
     }
 
     public void setMcc(String mcc) {
