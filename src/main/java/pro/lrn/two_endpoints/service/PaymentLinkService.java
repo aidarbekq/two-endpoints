@@ -1,5 +1,6 @@
 package pro.lrn.two_endpoints.service;
 import org.springframework.stereotype.Service;
+import pro.lrn.two_endpoints.dto.InformationAboutServiceProviderDTO;
 import pro.lrn.two_endpoints.dto.PaymentLinkDTO;
 import pro.lrn.two_endpoints.dto.PaymentLinkRequestDTO;
 import java.util.ArrayList;
@@ -60,18 +61,22 @@ public class PaymentLinkService {
             dto.setProviderName(values.get("59").get(0));
             dto.setDataChecksum(values.get("63").get(0));
 
-            List<String> info = new ArrayList<>();
+            InformationAboutServiceProviderDTO infos = new InformationAboutServiceProviderDTO();
+            Map<String, String> info2 = new HashMap<>();
             for (int i = 2; i <= 51; i++) {
                 if (values.containsKey(String.format("%02d", i))) {
                     List<String> valuesList = values.get(String.format("%02d", i));
                     if (valuesList != null) {
                         for (String value : valuesList) {
-                            info.add(String.format("%02d", i) + value);
+                            info2.put(String.format("%02d", i), value);
+                            infos.setInfo(info2);
+                            dto.setInformationAboutServiceProviderDTO(infos);
                         }
                     }
                 }
             }
-            dto.setInformationAboutServiceProvider(String.join("-", info));
+
+
         } catch (Exception e) {
             dto.setError("Error while parsing: " + e.getMessage());
         }
@@ -101,15 +106,21 @@ public class PaymentLinkService {
             }
         }
 
-        String[] providerInfo = paymentDTO.getInformationAboutServiceProvider().split("-");
-        int totalLength = 0;
-        for (int i = 0; i < providerInfo.length; i++) {
-            String id = providerInfo[i].substring(0, 2);
-            String data = providerInfo[i].substring(2);
+        Map<String, String> infos = new HashMap<>();
+        infos = paymentDTO.getInformationAboutServiceProviderDTO().getInfo();
+        System.out.println(infos.size());
+        System.out.println(infos);
+        for (Map.Entry<String, String> entry: infos.entrySet()){
+            String id = entry.getKey();
+            System.out.println(id);
+            String data = entry.getValue();
+            System.out.println(data);
             int dataLength = data.length();
+            System.out.println(dataLength);
             createdLink.append(id).append(String.format("%02d", dataLength)).append(data);
-            totalLength += dataLength + 4;
+
         }
+
         createdLink.append("52").append("04").append(paymentDTO.getMcc());
 
         createdLink.append("53").append("03");
