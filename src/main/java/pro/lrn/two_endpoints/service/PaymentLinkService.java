@@ -127,7 +127,6 @@ public class PaymentLinkService {
                 String data = nested_entry.getValue();
                 totalString.append(nested_id).append(String.format("%02d",data.length())).append(data);
             }
-            StringBuilder totalStringdeb = new StringBuilder();
             createdLink.append(id).append(String.format("%02d", totalString.length())).append(totalString);
 
         }
