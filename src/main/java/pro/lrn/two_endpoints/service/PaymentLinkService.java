@@ -62,89 +62,90 @@ public class PaymentLinkService {
             dto.setDataChecksum(values.get("63").get(0));
 
             InformationAboutServiceProviderDTO infos = new InformationAboutServiceProviderDTO();
-            Map<String, String> info2 = new HashMap<>();
-            for (int i = 2; i <= 51; i++) {
-                if (values.containsKey(String.format("%02d", i))) {
-                    List<String> valuesList = values.get(String.format("%02d", i));
-                    if (valuesList != null) {
-                        for (String value : valuesList) {
-                            info2.put(String.format("%02d", i), value);
-                            infos.setInfo(info2);
-                            dto.setInformationAboutServiceProviderDTO(infos);
-                        }
-                    }
-                }
-            }
+            Map<String, Map<String, String>> info = new HashMap<>();
+
+//            for (int i = 2; i <= 51; i++) {
+//                if (values.containsKey(String.format("%02d", i))) {
+//                    List<String> valuesList = values.get(String.format("%02d", i));
+//                    if (valuesList != null) {
+//                        for (String value : valuesList) {
+//                            info2.put(String.format("%02d", i), value);
+//                            infos.setInfo(info2);
+//                            dto.setInformationAboutServiceProviderDTO(infos);
+//                        }
+//                    }
+//                }
+//            }
 
 
         } catch (Exception e) {
             dto.setError("Error while parsing: " + e.getMessage());
         }
         return dto;
-    }
+    }}
 
 
-    public String createPaymentLink(PaymentLinkDTO paymentDTO) throws InvalidPaymentLinkException {
-        StringBuilder createdLink = new StringBuilder("https://balance.kg/#");
-
-
-        if (paymentDTO.getStandardVersion() != null && !paymentDTO.getStandardVersion().isEmpty()) {
-            if (!paymentDTO.getStandardVersion().equals("01")) {
-                throw new InvalidPaymentLinkException("Invalid Standard Version");}
-        } else {
-            paymentDTO.setStandardVersion("01");
-        }
-        createdLink.append("00").append("02").append(paymentDTO.getStandardVersion());
-
-
-
-        if (paymentDTO.getTypeOfPaymentLink() != null && !paymentDTO.getTypeOfPaymentLink().isEmpty()) {
-            if (paymentDTO.getTypeOfPaymentLink().equals("11") || paymentDTO.getTypeOfPaymentLink().equals("12"))  {
-                createdLink.append("01").append("02").append(paymentDTO.getTypeOfPaymentLink());
-            } else {
-                throw new InvalidPaymentLinkException("Invalid Type of Payment Link");
-            }
-        }
-
-        Map<String, String> infos = new HashMap<>();
-        infos = paymentDTO.getInformationAboutServiceProviderDTO().getInfo();
-        System.out.println(infos.size());
-        System.out.println(infos);
-        for (Map.Entry<String, String> entry: infos.entrySet()){
-            String id = entry.getKey();
-            System.out.println(id);
-            String data = entry.getValue();
-            System.out.println(data);
-            int dataLength = data.length();
-            System.out.println(dataLength);
-            createdLink.append(id).append(String.format("%02d", dataLength)).append(data);
-
-        }
-
-        createdLink.append("52").append("04").append(paymentDTO.getMcc());
-
-        createdLink.append("53").append("03");
-        if (paymentDTO.getCurrencyCode() != null && !paymentDTO.getCurrencyCode().isEmpty()) {
-            createdLink.append(paymentDTO.getCurrencyCode());
-        } else {
-            createdLink.append("417");
-        }
-
-        if (paymentDTO.getPaymentAmount() != null && !paymentDTO.getPaymentAmount().isEmpty()) {
-            if (paymentDTO.getPaymentAmount().length() > 13) {
-                throw new InvalidPaymentLinkException("Length of Payment Amount should be between 1 and 13");
-            }
-            createdLink.append("54").append(String.format("%02d", paymentDTO.getPaymentAmount().length())).append(paymentDTO.getPaymentAmount());
-        }
-
-        int length_of_name = paymentDTO.getProviderName().length();
-        if (length_of_name < 1 || length_of_name > 25) {
-            throw new InvalidPaymentLinkException("Length of Provider Name should be between 1 and 25");
-        }
-        createdLink.append("59").append(String.format("%02d", length_of_name)).append(paymentDTO.getProviderName());
-
-        createdLink.append("63").append("04").append(paymentDTO.getDataChecksum());
-
-        return createdLink.toString();
-    }
-}
+//    public String createPaymentLink(PaymentLinkDTO paymentDTO) throws InvalidPaymentLinkException {
+//        StringBuilder createdLink = new StringBuilder("https://balance.kg/#");
+//
+//
+//        if (paymentDTO.getStandardVersion() != null && !paymentDTO.getStandardVersion().isEmpty()) {
+//            if (!paymentDTO.getStandardVersion().equals("01")) {
+//                throw new InvalidPaymentLinkException("Invalid Standard Version");}
+//        } else {
+//            paymentDTO.setStandardVersion("01");
+//        }
+//        createdLink.append("00").append("02").append(paymentDTO.getStandardVersion());
+//
+//
+//
+//        if (paymentDTO.getTypeOfPaymentLink() != null && !paymentDTO.getTypeOfPaymentLink().isEmpty()) {
+//            if (paymentDTO.getTypeOfPaymentLink().equals("11") || paymentDTO.getTypeOfPaymentLink().equals("12"))  {
+//                createdLink.append("01").append("02").append(paymentDTO.getTypeOfPaymentLink());
+//            } else {
+//                throw new InvalidPaymentLinkException("Invalid Type of Payment Link");
+//            }
+//        }
+//
+//        Map<String, String> infos = new HashMap<>();
+//        infos = paymentDTO.getInformationAboutServiceProviderDTO().getInfo();
+//        System.out.println(infos.size());
+//        System.out.println(infos);
+//        for (Map.Entry<String, String> entry: infos.entrySet()){
+//            String id = entry.getKey();
+//            System.out.println(id);
+//            String data = entry.getValue();
+//            System.out.println(data);
+//            int dataLength = data.length();
+//            System.out.println(dataLength);
+//            createdLink.append(id).append(String.format("%02d", dataLength)).append(data);
+//
+//        }
+//
+//        createdLink.append("52").append("04").append(paymentDTO.getMcc());
+//
+//        createdLink.append("53").append("03");
+//        if (paymentDTO.getCurrencyCode() != null && !paymentDTO.getCurrencyCode().isEmpty()) {
+//            createdLink.append(paymentDTO.getCurrencyCode());
+//        } else {
+//            createdLink.append("417");
+//        }
+//
+//        if (paymentDTO.getPaymentAmount() != null && !paymentDTO.getPaymentAmount().isEmpty()) {
+//            if (paymentDTO.getPaymentAmount().length() > 13) {
+//                throw new InvalidPaymentLinkException("Length of Payment Amount should be between 1 and 13");
+//            }
+//            createdLink.append("54").append(String.format("%02d", paymentDTO.getPaymentAmount().length())).append(paymentDTO.getPaymentAmount());
+//        }
+//
+//        int length_of_name = paymentDTO.getProviderName().length();
+//        if (length_of_name < 1 || length_of_name > 25) {
+//            throw new InvalidPaymentLinkException("Length of Provider Name should be between 1 and 25");
+//        }
+//        createdLink.append("59").append(String.format("%02d", length_of_name)).append(paymentDTO.getProviderName());
+//
+//        createdLink.append("63").append("04").append(paymentDTO.getDataChecksum());
+//
+//        return createdLink.toString();
+//    }
+//}

@@ -6,13 +6,13 @@ import java.util.List;
 import java.util.Map;
 
 public class InformationAboutServiceProviderDTO {
-    private Map<String, String> info = new HashMap<>();
+    private Map<String, Map<String, String>> info = new HashMap<>();
 
-    public Map<String, String> getInfo() {
+    public Map<String, Map<String, String>> getInfo() {
         return info;
     }
 
-    public void setInfo(Map<String, String> info) {
+    public void setInfo(Map<String, Map<String, String>> info) {
         this.info = info;
     }
 }

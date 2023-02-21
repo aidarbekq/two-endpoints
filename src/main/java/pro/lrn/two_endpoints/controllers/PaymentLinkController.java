@@ -29,7 +29,6 @@ public class PaymentLinkController {
         String link = paymentLinkService.createPaymentLink(paymentLinkDTO);
         return ResponseEntity.ok(link);
     }
-
 }
 
 
