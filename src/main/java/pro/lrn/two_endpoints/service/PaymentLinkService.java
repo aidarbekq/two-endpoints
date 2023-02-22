@@ -60,10 +60,9 @@ public class PaymentLinkService {
 
             dto.setProviderName(values.get("59").get(0));
             dto.setDataChecksum(values.get("63").get(0));
-
             InformationAboutServiceProviderDTO infos = new InformationAboutServiceProviderDTO();
             Map<String, Map<String, String>> info2 = new HashMap<>();
-            for (int i = 32; i <= 51; i++) {
+            for (int i = 2; i <= 51; i++) {
                 if (values.containsKey(String.format("%02d", i))) {
                     List<String> valuesList = values.get(String.format("%02d", i));
                     if (valuesList != null) {
@@ -73,9 +72,33 @@ public class PaymentLinkService {
                                 String id = value.substring(0, 2);
                                 int info_length = Integer.parseInt(value.substring(2, 4));
                                 String info_value = value.substring(4, 4 + info_length);
+                                switch (i) {
+                                    case (32):
+                                        switch (id) {
+                                            case ("00"):
+                                                id = id +"-uniqueID";
+                                                break;
+                                            case ("01"):
+                                                id = id + "-paymentNetworkSpecification";
+                                                break;
+                                            case ("10"):
+                                                id = id + "-uniqueIDOfPayer";
+                                                break;
+                                            case ("11"):
+                                                id = id + "-transactionID";
+                                                break;
+                                            case ("12"):
+                                                id = id + "-possibilityToEditAmount";
+                                                break;
+                                            case ("13"):
+                                                id = id + "-possibilityToEditPayerID";
+                                                break;
+                                }
+                                }
                                 info_values.put(id, info_value);
                                 info2.put(String.format("%02d", i), info_values);
                                 value = value.substring(4 + info_length);
+
                             }
                             infos.setInfo(info2);
                             dto.setInformationAboutServiceProviderDTO(infos);
@@ -125,7 +148,7 @@ public class PaymentLinkService {
             for (Map.Entry<String, String> nested_entry: nested_info.entrySet()) {
                 String nested_id = nested_entry.getKey();
                 String data = nested_entry.getValue();
-                totalString.append(nested_id).append(String.format("%02d",data.length())).append(data);
+                totalString.append(nested_id.substring(0,2)).append(String.format("%02d",data.length())).append(data);
             }
             createdLink.append(id).append(String.format("%02d", totalString.length())).append(totalString);
 
